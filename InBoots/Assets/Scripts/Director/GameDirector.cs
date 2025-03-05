@@ -9,7 +9,8 @@ public class GameDirector : MonoBehaviour
     private IntroDirector intro;
     private OutroDirector outro;
 
-    [SerializeField, Tooltip("Must be ordered as intended")] private List<Event> events;
+    [SerializeField, Tooltip("Must be ordered as intended")] private List<GameObject> iterations;
+    [HideInInspector, SerializeField, Tooltip("Must be ordered as intended")] private List<Event> events;
 
     private void Awake()
     {
