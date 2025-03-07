@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private Controls controls;
-    public enum ControlScheme {DIRECTIONAL, MASH, REACTIONARY};
 
     private InputAction directional_up;
     private InputAction directional_down;
@@ -19,6 +18,11 @@ public class PlayerController : MonoBehaviour
     private InputAction reactionary_fire;
     private InputAction reactionary_up;
     private InputAction reactionary_down;
+
+    private DirectionalMinigamePlayer directionalMinigame;
+    private DragMinigamePlayer dragMinigame;
+    private MashMinigamePlayer mashMinigame;
+    private ReactionaryMinigamePlayer reactionaryMinigame;
 
     private void Awake()
     {
@@ -34,30 +38,43 @@ public class PlayerController : MonoBehaviour
         reactionary_fire = controls.Reactionary.Fire;
         reactionary_up = controls.Reactionary.Up;
         reactionary_down = controls.Reactionary.Down;
+
+        directionalMinigame = FindObjectOfType<DirectionalMinigamePlayer>();
+        dragMinigame = FindObjectOfType<DragMinigamePlayer>();
+        mashMinigame = FindObjectOfType<MashMinigamePlayer>();
+        reactionaryMinigame = FindObjectOfType<ReactionaryMinigamePlayer>();
     }
 
-    public void EnableScheme(ControlScheme scheme)
+    public void EnableScheme(EventProfile profile)
     {
-        if (scheme == ControlScheme.DIRECTIONAL) EnableDirectional();
-        else if (scheme == ControlScheme.MASH) EnableMash();
-        else if (scheme == ControlScheme.REACTIONARY) EnableReactionary();
+        if (profile is CinematicProfile) DisableAll();
+        else if (profile is DirectionalMinigameProfile) EnableDirectional();
+        else if (profile is DragMinigameProfile) DisableAll();
+        else if (profile is MashMinigameProfile) EnableMash();
+        else if (profile is ReactionaryMinigameProfile) EnableReactionary();
     }
 
-    public void DisableScheme(ControlScheme scheme)
+    public void DisableScheme(EventProfile profile)
     {
-        if (scheme == ControlScheme.DIRECTIONAL) DisableDirectional();
-        else if (scheme == ControlScheme.MASH) DisableMash();
-        else if (scheme == ControlScheme.REACTIONARY) DisableReactionary();
+        if (profile is DirectionalMinigameProfile) DisableDirectional();
+        else if (profile is MashMinigameProfile) DisableMash();
+        else if (profile is ReactionaryMinigameProfile) DisableReactionary();
     }
 
     private void EnableDirectional()
     {
-
+        directional_up.performed += directionalMinigame.InputUp;
+        directional_down.performed += directionalMinigame.InputDown;
+        directional_left.performed += directionalMinigame.InputLeft;
+        directional_right.performed += directionalMinigame.InputRight;
     }
 
     private void DisableDirectional()
     {
-
+        directional_up.performed -= directionalMinigame.InputUp;
+        directional_down.performed -= directionalMinigame.InputDown;
+        directional_left.performed -= directionalMinigame.InputLeft;
+        directional_right.performed -= directionalMinigame.InputRight;
     }
 
     private void EnableMash()

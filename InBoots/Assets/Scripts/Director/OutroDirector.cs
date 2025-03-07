@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class OutroDirector : MonoBehaviour
@@ -15,6 +14,8 @@ public class OutroDirector : MonoBehaviour
 
     private IEnumerator Routine()
     {
+        Debug.Log("Outro statrted");
+
         yield return null;
 #if !UNITY_EDITOR
         Application.Quit();

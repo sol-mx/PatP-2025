@@ -14,6 +14,8 @@ public class IntroDirector : MonoBehaviour
 
     private IEnumerator Routine()
     {
+        Debug.Log("Intro statrted");
+
         if (skip)
         {
             Ended = true;
