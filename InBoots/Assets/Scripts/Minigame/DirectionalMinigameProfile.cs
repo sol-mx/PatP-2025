@@ -6,5 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DirectionalMinigameProfile", menuName = "EventProfile/Minigame/Dinner", order = 2)]
 public class DirectionalMinigameProfile : MinigameProfile
 {
-    [field: SerializeField] public List<DirectionalMinigameEntry> Entries { get; private set; }
+    [field: SerializeField] public List<DirectionalMinigameQuestion> Questions { get; private set; }
 }

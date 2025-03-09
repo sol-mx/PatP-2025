@@ -79,22 +79,26 @@ public class PlayerController : MonoBehaviour
 
     private void EnableMash()
     {
-
+        mash_fire.performed += mashMinigame.Mash;
     }
 
     private void DisableMash()
     {
-
+        mash_fire.performed -= mashMinigame.Mash;
     }
 
     private void EnableReactionary()
     {
-
+        reactionary_fire.performed += reactionaryMinigame.Fire;
+        reactionary_up.performed += reactionaryMinigame.AimUp;
+        reactionary_down.performed += reactionaryMinigame.AimDown;
     }
 
     private void DisableReactionary()
     {
-
+        reactionary_fire.performed -= reactionaryMinigame.Fire;
+        reactionary_up.performed -= reactionaryMinigame.AimUp;
+        reactionary_down.performed -= reactionaryMinigame.AimDown;
     }
 
     public void DisableAll()
@@ -103,7 +107,6 @@ public class PlayerController : MonoBehaviour
         DisableMash();
         DisableReactionary();
     }
-
 
     private void OnEnable()
     {

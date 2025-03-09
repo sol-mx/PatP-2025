@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DirectionalMinigameEntry", menuName = "EventEntry/Directional", order = 7)]
-public class DirectionalMinigameEntry : ScriptableObject
+public class DirectionalMinigameQuestion : ScriptableObject
 {
     [SerializeField] private string question;
     [SerializeField] private string reply;

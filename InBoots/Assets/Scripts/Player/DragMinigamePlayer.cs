@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DragMinigamePlayer : MinigamePlayer
 {
-    private GameManager.EventEntry currentEntry;
     [SerializeField] private DragMinigameProfile currentProfile;
 
     public void StartMinigame(GameManager.EventEntry entry, DragMinigameProfile profile)
@@ -17,6 +16,9 @@ public class DragMinigamePlayer : MinigamePlayer
 
     private IEnumerator Routine()
     {
+        // logic goes here...
+
+        // END MINIGAME
         yield return null;
         currentEntry.End();
     }

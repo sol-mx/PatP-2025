@@ -9,9 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 302ff4b0b880b514ca2557ba9614f2ed, type: 3}
+  m_Script: {fileID: 11500000, guid: b7c163e42c6797b4ebba58f1d9f7ca4e, type: 3}
   m_Name: C1
   m_EditorClassIdentifier: 
   <Description>k__BackingField: 
   <EventType>k__BackingField: 1
   <MinigameType>k__BackingField: 2
+  <ClearThreshold>k__BackingField: 100
+  <StaticDecrement>k__BackingField: 1
+  mashTimingMinDuration: 2
+  mashTimingMaxDuration: 4
+  mashTimingMinCooldown: 4
+  mashTimingMaxCooldown: 8
+  <EnablePenaltyTiming>k__BackingField: 0
+  <EnableOnlyUseSpecifcKeys>k__BackingField: 0
+  penaltyTimingMinDuration: 2
+  penaltyTimingMaxDuration: 4
+  penaltyTimingMinCooldown: 4
+  penaltyTimingMaxCooldown: 8

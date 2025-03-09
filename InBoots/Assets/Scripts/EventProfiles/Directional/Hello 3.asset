@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ba6f6577ea9c754493a9b8cee339a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: 64163af76354a974b8ae87da35b23693, type: 3}
   m_Name: Hello 3
   m_EditorClassIdentifier: 
   question: Hey-hey!

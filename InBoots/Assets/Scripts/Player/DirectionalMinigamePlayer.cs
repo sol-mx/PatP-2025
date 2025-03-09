@@ -4,20 +4,18 @@ using System.Timers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static DirectionalMinigameEntry;
 
 public class DirectionalMinigamePlayer : MinigamePlayer
 {
     [Header("Monitor")]
-    private GameManager.EventEntry currentEntry;
-    private DirectionalMinigameEntry currentSubEntry;
     [SerializeField] private DirectionalMinigameProfile currentProfile;
+    private DirectionalMinigameQuestion currentQuestion;
 
     public enum Input { UP, DOWN, LEFT, RIGHT }
     private readonly Dictionary<int, Input> inputByIndex = new() { { 0, Input.UP }, { 1, Input.DOWN }, { 2, Input.LEFT }, { 3, Input.RIGHT } };
+    private readonly Dictionary<Input, string> labelByInput = new() { { Input.UP, "up" }, { Input.DOWN, "down" }, { Input.LEFT, "left" }, { Input.RIGHT, "right" } };
 
-    [Space(10), SerializeField] private bool pollInput;
-    [SerializeField] private List<Input> neededInput;
+    [Space(10), SerializeField] private List<Input> neededInput;
     [SerializeField] private List<Input> currentInput;
     [SerializeField] private int currentErrors;
 
@@ -26,32 +24,37 @@ public class DirectionalMinigamePlayer : MinigamePlayer
         currentEntry = entry;
         currentProfile = profile;
 
-        StartCoroutine(Routine());
+        routine = StartCoroutine(Routine());
     }
 
     private IEnumerator Routine()
     {
-        foreach (var entry in currentProfile.Entries)
+        foreach (var question in currentProfile.Questions)
         {
-            currentSubEntry = entry;
+            currentQuestion = question;
 
             neededInput.Clear();
             currentInput.Clear();
             currentErrors = 0;
-            textDisplay.text = "";
+            debugText.text = "";
 
-            foreach (var word in entry.Words)
+            foreach (var word in question.Words)
             {
-                neededInput.Add(inputByIndex[Random.Range(0, 4)]);
-                textDisplay.text += word.Question + " ";
+                var randomInput = inputByIndex[Random.Range(0, 4)];
+                neededInput.Add(randomInput);
+
+                debugText.text += word.Question + " ";
+                debugText.text += $"({labelByInput[randomInput]})" + " "; // TEMP
 
                 yield return new WaitForSeconds(delayPerWord);
             }
 
             yield return new WaitForSeconds(questionDuration);
 
+            commentManager.SetDirectionalMinigameComment(neededInput);
+            
             pollInput = true;
-            textDisplay.text = "";
+            debugText.text = "";
 
             var elapsed = 0f;
 
@@ -67,16 +70,13 @@ public class DirectionalMinigamePlayer : MinigamePlayer
 
                 yield return null;
             }
+
+            commentManager.SetComment("Great!");
+            yield return new WaitForSeconds(delayPerQuestion);
+            commentManager.EmptyComment();
         }
 
-        yield return null;
-        currentEntry.End();
-    }
-
-    private void GameOver()
-    {
-        pollInput = false;
-        Debug.Log("Game Over");
+        Clear();
     }
 
     // =================================================================================================================
@@ -106,9 +106,26 @@ public class DirectionalMinigamePlayer : MinigamePlayer
         if (!pollInput) return;
         currentInput.Add(key);
 
-        textDisplay.text += currentSubEntry.Words[currentInput.Count - 2].Reply + " ";
+        debugText.text += currentQuestion.Words[currentInput.Count - 1].Reply + " ";
 
-        if (neededInput[currentInput.Count - 1] != key) currentErrors++;
+        if (neededInput[currentInput.Count - 1] != key)
+        {
+            currentErrors++;
+            Debug.Log("Incorrect input!");
+        }
+        else
+        {
+            Debug.Log("Correct input!");
+
+            if (neededInput.Count == currentInput.Count)
+            {
+                Debug.Log("Clear!");
+
+                pollInput = false;
+                return;
+            }
+        }
+
         if (currentErrors > allowedErrors) GameOver();
     }
 
@@ -116,10 +133,8 @@ public class DirectionalMinigamePlayer : MinigamePlayer
 
     [Header("Settings")]
     [SerializeField] private float questionDuration = 3.5f;
-    [SerializeField] private float delayPerWord = 0.35f;
     [SerializeField] private float responseDuration = 3.5f;
-    [SerializeField] private int allowedErrors;
-
-    [Header("References")]
-    [SerializeField] private TextMeshProUGUI textDisplay;
+    [Space(10), SerializeField] private float delayPerWord = 0.35f;
+    [SerializeField] private float delayPerQuestion = 0.5f;
+    [Space(10), SerializeField] private int allowedErrors;
 }
